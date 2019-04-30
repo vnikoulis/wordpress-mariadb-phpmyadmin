@@ -1,0 +1,63 @@
+version: '3.7'
+
+services:
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+       MYSQL_ROOT_PASSWORD: wordpress
+       MYSQL_DATABASE: wordpress
+    networks: 
+      - main_net
+    
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - wp-app:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: wordpress
+    networks: 
+      - main_net
+    depends_on:
+      - mariadb
+
+  cli:
+    image: wordpress:cli
+    volumes:
+      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - ./wp-app:/var/www/html
+    depends_on:
+      - wordpress
+      - mariadb
+    networks: 
+    - main_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: wordpress
+      PMA_PORT: 3306
+    ports:
+      - 8080:80
+    networks: 
+      - main_net
+    
+volumes:
+  db_data:
+    external: true
+  wp-app:
+
+networks: 
+  main_net:
