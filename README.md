@@ -1,5 +1,5 @@
 ![Image of docker, wp and phpmyadmin](https://i.imgur.com/kjOuf9a.jpg)
-# Wordpress, MariDB & phpMyAdmin Docker Compose
+# Wordpress, MariaDB & phpMyAdmin Docker Compose
 This project allows you to develop with Wordpress using Docker and Docker compose
 
 ## Configuration
