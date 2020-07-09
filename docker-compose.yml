@@ -32,17 +32,6 @@ services:
     depends_on:
       - mariadb
 
-  cli:
-    image: wordpress:cli
-    volumes:
-      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html
-    depends_on:
-      - wordpress
-      - mariadb
-    networks: 
-    - main_net
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
@@ -51,12 +40,13 @@ services:
       PMA_PORT: 3306
     ports:
       - 8080:80
+    depends_on:
+      - mariadb
     networks: 
       - main_net
     
 volumes:
   db_data:
-    external: true
   wp-app:
 
 networks: 
